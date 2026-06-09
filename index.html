@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anbu Fruit Stall – Fresh Fruits Daily</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --mango:   #F4A51A;
+    --papaya:  #F06B1D;
+    --leaf:    #2D6A2F;
+    --leaf-lt: #4CAF50;
+    --cream:   #FFFDF5;
+    --dark:    #1A1A0F;
+    --mid:     #5A4F3A;
+    --light:   #FFF8E1;
+    --red:     #E53935;
+    --review-bg: #FFFBF0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--dark); }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--leaf);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw; height: 62px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  .nav-brand { font-family: 'Caveat', cursive; font-size: 1.55rem; color: #fff; letter-spacing: .5px; }
+  .nav-brand span { color: var(--mango); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: #c8f5c9; font-size: .88rem; font-weight: 500; text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--mango); }
+  .nav-badge { background: var(--mango); color: #fff; font-size: .72rem; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--leaf) 0%, #1b4d1c 55%, #0e2e0f 100%);
+    padding: 80px 5vw 70px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900;
+    color: #fff; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .hero-text h1 em { color: var(--mango); font-style: normal; }
+  .hero-text p { color: #b8e6b9; font-size: 1.05rem; line-height: 1.7; max-width: 420px; }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
+  .pill {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+    color: #fff; font-size: .8rem; padding: 5px 14px; border-radius: 99px;
+  }
+  .hero-cta { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--mango); color: #fff; border: none; border-radius: 8px;
+    padding: 12px 28px; font-size: .95rem; font-weight: 600; cursor: pointer;
+    text-decoration: none; display: inline-block; transition: background .2s, transform .1s;
+  }
+  .btn-primary:hover { background: var(--papaya); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; border: 2px solid rgba(255,255,255,.45); color: #fff;
+    border-radius: 8px; padding: 11px 24px; font-size: .95rem; font-weight: 600;
+    cursor: pointer; text-decoration: none; display: inline-block; transition: .2s;
+  }
+  .btn-outline:hover { border-color: var(--mango); color: var(--mango); }
+  .hero-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .fruit-card-hero {
+    background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 16px; padding: 18px 16px; text-align: center;
+    backdrop-filter: blur(4px);
+  }
+  .fruit-card-hero .emoji { font-size: 2.4rem; }
+  .fruit-card-hero .name { color: #e8f5e9; font-size: .85rem; font-weight: 600; margin-top: 6px; }
+  .fruit-card-hero .price { color: var(--mango); font-size: 1rem; font-weight: 700; }
+
+  /* DELIVERY BANNER */
+  .delivery-banner {
+    background: linear-gradient(90deg, var(--papaya), var(--mango));
+    color: #fff; text-align: center; padding: 14px 5vw;
+    font-size: .95rem; font-weight: 600; letter-spacing: .3px;
+  }
+  .delivery-banner span { font-size: 1.15rem; }
+
+  /* SECTION SHELL */
+  section { padding: 64px 5vw; }
+  .section-eyebrow { color: var(--leaf); font-size: .78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: .5rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem,3vw,2.4rem); font-weight: 700; color: var(--dark); margin-bottom: .5rem; }
+  .section-sub { color: var(--mid); font-size: .96rem; line-height: 1.6; max-width: 520px; margin-bottom: 2.5rem; }
+
+  /* FRUITS GRID */
+  #fruits { background: var(--light); }
+  .fruits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; }
+  .fruit-tile {
+    background: #fff; border: 1.5px solid #f0ead6; border-radius: 16px;
+    padding: 22px 16px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    transition: transform .2s, box-shadow .2s;
+    position: relative; overflow: hidden;
+  }
+  .fruit-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .fruit-tile .emoji { font-size: 2.8rem; }
+  .fruit-tile .fname { font-weight: 700; font-size: .97rem; margin: 10px 0 4px; color: var(--dark); }
+  .fruit-tile .funit { font-size: .78rem; color: var(--mid); }
+  .fruit-tile .fprice { font-size: 1.3rem; font-weight: 800; color: var(--leaf); margin-top: 6px; }
+  .fruit-tile .tag { position: absolute; top: 10px; right: 10px; background: var(--leaf-lt); color: #fff; font-size: .65rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+  .fruit-tile .tag.offer { background: var(--red); }
+
+  /* ADMIN PANEL */
+  #admin { background: #f8f4ec; }
+  .admin-wrapper {
+    background: #fff; border: 2px solid #e8e0c8; border-radius: 20px;
+    padding: 32px; max-width: 760px;
+  }
+  .admin-wrapper h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 6px; }
+  .admin-wrapper p { color: var(--mid); font-size: .88rem; margin-bottom: 20px; }
+  .admin-lock { display: flex; gap: 10px; margin-bottom: 20px; }
+  .admin-lock input { flex: 1; padding: 10px 14px; border: 1.5px solid #ddd; border-radius: 8px; font-size: .9rem; font-family: inherit; }
+  .admin-lock input:focus { outline: none; border-color: var(--leaf); }
+  #admin-panel { display: none; }
+  .fruit-edit-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 10px;
+  }
+  .fruit-edit-row label { font-size: .78rem; font-weight: 600; color: var(--mid); display: block; margin-bottom: 3px; }
+  .fruit-edit-row input, .fruit-edit-row select {
+    padding: 9px 12px; border: 1.5px solid #ddd; border-radius: 8px;
+    font-size: .88rem; font-family: inherit; width: 100%;
+  }
+  .fruit-edit-row input:focus, .fruit-edit-row select:focus { outline: none; border-color: var(--leaf); }
+  .btn-del { background: #ffeaea; border: 1.5px solid #ffcdd2; color: var(--red); border-radius: 8px; padding: 9px 14px; cursor: pointer; font-size: .9rem; font-weight: 600; transition: background .2s; }
+  .btn-del:hover { background: #ffcdd2; }
+  .btn-add { background: #e8f5e9; border: 1.5px solid #c8e6c9; color: var(--leaf); border-radius: 8px; padding: 9px 18px; cursor: pointer; font-size: .88rem; font-weight: 700; margin-top: 6px; }
+  .btn-save { background: var(--leaf); color: #fff; border: none; border-radius: 8px; padding: 11px 28px; font-size: .95rem; font-weight: 700; cursor: pointer; margin-top: 14px; }
+  .btn-save:hover { background: #1b5e20; }
+  .save-msg { color: var(--leaf); font-size: .85rem; font-weight: 600; margin-top: 8px; display: none; }
+
+  /* REVIEWS */
+  #reviews { background: var(--review-bg); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 2.5rem; }
+  .review-card {
+    background: #fff; border: 1.5px solid #f5e9cc; border-radius: 16px;
+    padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  }
+  .review-card .stars { color: var(--mango); font-size: 1.1rem; margin-bottom: 8px; }
+  .review-card .text { font-size: .92rem; color: var(--mid); line-height: 1.6; margin-bottom: 10px; }
+  .review-card .author { font-weight: 700; font-size: .85rem; color: var(--dark); }
+  .review-form { background: #fff; border: 1.5px solid #e8dfc4; border-radius: 16px; padding: 28px; max-width: 520px; }
+  .review-form h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 1.2rem; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { font-size: .8rem; font-weight: 600; color: var(--mid); display: block; margin-bottom: 4px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 10px 14px; border: 1.5px solid #ddd; border-radius: 8px;
+    font-size: .9rem; font-family: inherit; resize: vertical;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--mango); }
+  .star-select { display: flex; gap: 6px; font-size: 1.6rem; cursor: pointer; margin: 4px 0; }
+  .star-select span { color: #ddd; transition: color .15s; user-select: none; }
+  .star-select span.active { color: var(--mango); }
+
+  /* CONTACT */
+  #contact { background: var(--dark); }
+  #contact .section-eyebrow { color: var(--leaf-lt); }
+  #contact .section-title { color: #fff; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .contact-card {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px; padding: 24px; margin-bottom: 14px;
+  }
+  .contact-card .label { font-size: .74rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mango); margin-bottom: 6px; }
+  .contact-card .value { font-size: 1rem; color: #e8f5e9; font-weight: 600; }
+  .contact-card .value a { color: inherit; text-decoration: none; }
+  .contact-card .value a:hover { color: var(--mango); }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #25D366; color: #fff; font-weight: 700; font-size: 1rem;
+    padding: 13px 26px; border-radius: 10px; text-decoration: none; margin-top: 4px;
+    transition: background .2s;
+  }
+  .wa-btn:hover { background: #1da851; }
+  .map-embed { border-radius: 16px; overflow: hidden; border: 2px solid rgba(255,255,255,.1); }
+  .map-embed iframe { display: block; width: 100%; height: 300px; border: none; }
+
+  /* FOOTER */
+  footer {
+    background: #0d1a0d; color: #7aad7b; text-align: center;
+    padding: 24px 5vw; font-size: .82rem; line-height: 1.8;
+  }
+  footer strong { color: var(--mango); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-visual { display: none; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .fruit-edit-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .fruit-edit-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">🍉 <span>Anbu</span> Fruit Stall</div>
+  <ul class="nav-links">
+    <li><a href="#fruits">Fruits</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#admin" class="nav-badge">Manage</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Nature's Finest,<br><em>Freshest</em> Every Day</h1>
+    <p>Welcome to Anbu Fruit Stall — your neighbourhood destination for hand-picked, juicy fruits at the fairest prices. Freshness is our promise.</p>
+    <div class="hero-pills">
+      <span class="pill">🌅 Daily Fresh Stock</span>
+      <span class="pill">🚚 Free Delivery ₹1000+</span>
+      <span class="pill">🌿 Locally Sourced</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#fruits" class="btn-primary">View Today's Fruits</a>
+      <a href="#contact" class="btn-outline">Contact Us</a>
+    </div>
+  </div>
+  <div class="hero-visual" id="hero-tiles"></div>
+</section>
+
+<!-- DELIVERY BANNER -->
+<div class="delivery-banner">
+  <span>🚚</span> &nbsp;Free home delivery for orders above <strong>₹1,000</strong> — for nearby locations. Call us to confirm your area!
+</div>
+
+<!-- FRUITS -->
+<section id="fruits">
+  <div class="section-eyebrow">Today's Stock</div>
+  <div class="section-title">Fresh Fruits Available</div>
+  <p class="section-sub">Prices may vary daily based on availability and season. Check back often for the best deals!</p>
+  <div class="fruits-grid" id="fruits-grid"></div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin">
+  <div class="section-eyebrow">Stall Owner</div>
+  <div class="section-title">Manage Fruits & Prices</div>
+  <p class="section-sub">Update your fruit list and prices in real time. Only the stall owner can access this panel.</p>
+  <div class="admin-wrapper">
+    <h3>🔒 Owner Login</h3>
+    <p>Enter your admin password to update the fruit list and prices.</p>
+    <div class="admin-lock">
+      <input type="password" id="admin-pass" placeholder="Enter admin password…"/>
+      <button class="btn-primary" onclick="unlockAdmin()">Unlock</button>
+    </div>
+    <div id="admin-panel">
+      <div id="edit-rows"></div>
+      <button class="btn-add" onclick="addFruitRow()">+ Add Fruit</button><br/>
+      <button class="btn-save" onclick="saveFruits()">Save Changes</button>
+      <div class="save-msg" id="save-msg">✅ Saved! The fruit list is now updated.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-eyebrow">What Customers Say</div>
+  <div class="section-title">Reviews</div>
+  <p class="section-sub">We love hearing from our customers. Share your experience with Anbu Fruit Stall!</p>
+  <div class="reviews-grid" id="reviews-grid"></div>
+  <div class="review-form">
+    <h4>Leave a Review</h4>
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" id="rv-name" placeholder="e.g. Kavitha"/>
+    </div>
+    <div class="form-group">
+      <label>Rating</label>
+      <div class="star-select" id="star-select">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span>
+        <span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Your Review</label>
+      <textarea id="rv-text" rows="3" placeholder="Tell us about your experience…"></textarea>
+    </div>
+    <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+    <div class="save-msg" id="rv-msg">✅ Thank you for your review!</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow">Find Us</div>
+  <div class="section-title" style="color:#fff">Contact & Location</div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-card">
+        <div class="label">📞 Phone</div>
+        <div class="value"><a href="tel:7871693077">+91 78716 93077</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="label">⏰ Hours</div>
+        <div class="value">Mon – Sun: 7:00 AM – 9:00 PM</div>
+      </div>
+      <div class="contact-card">
+        <div class="label">🚚 Free Delivery</div>
+        <div class="value">Orders above ₹1,000 — nearby locations</div>
+      </div>
+      <a href="https://wa.me/917871693077" target="_blank" class="wa-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Us
+      </a>
+    </div>
+    <div>
+      <div class="map-embed">
+        <iframe
+          src="https://maps.google.com/maps?q=https://maps.app.goo.gl/4rres6xWiR6YrK368&output=embed"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <div style="margin-top:12px">
+        <a href="https://maps.app.goo.gl/4rres6xWiR6YrK368" target="_blank" class="btn-primary" style="width:100%;text-align:center;display:block">
+          📍 Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>🍉 Anbu Fruit Stall</strong> &nbsp;·&nbsp; +91 78716 93077 &nbsp;·&nbsp;
+  <a href="https://wa.me/917871693077" style="color:var(--leaf-lt);text-decoration:none">WhatsApp</a><br/>
+  © 2025 Anbu Fruit Stall. All rights reserved. Fresh fruits, fresh promises.
+</footer>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const ADMIN_PASSWORD = "anbu2025"; // owner can change this
+
+const defaultFruits = [
+  { emoji:"🍌", name:"Banana",      price:40,  unit:"per dozen", tag:"Fresh" },
+  { emoji:"🍎", name:"Apple",       price:180, unit:"per kg",    tag:"Popular" },
+  { emoji:"🥭", name:"Mango",       price:120, unit:"per kg",    tag:"Season" },
+  { emoji:"🍇", name:"Grapes",      price:90,  unit:"per kg",    tag:"Fresh" },
+  { emoji:"🍊", name:"Orange",      price:80,  unit:"per kg",    tag:"Fresh" },
+  { emoji:"🍉", name:"Watermelon",  price:30,  unit:"per kg",    tag:"Offer" },
+  { emoji:"🍍", name:"Pineapple",   price:60,  unit:"per piece", tag:"Fresh" },
+  { emoji:"🥝", name:"Kiwi",        price:200, unit:"per kg",    tag:"Imported" },
+  { emoji:"🍓", name:"Strawberry",  price:160, unit:"per box",   tag:"Season" },
+  { emoji:"🍑", name:"Sapota",      price:70,  unit:"per kg",    tag:"Fresh" },
+  { emoji:"🍐", name:"Guava",       price:50,  unit:"per kg",    tag:"Fresh" },
+  { emoji:"🫐", name:"Pomegranate", price:140, unit:"per kg",    tag:"Popular" },
+];
+
+function loadFruits() {
+  try {
+    const s = localStorage.getItem("anbu_fruits");
+    return s ? JSON.parse(s) : defaultFruits;
+  } catch(e) { return defaultFruits; }
+}
+function saveFruitsData(data) {
+  localStorage.setItem("anbu_fruits", JSON.stringify(data));
+}
+
+// ─── RENDER FRUITS GRID ──────────────────────────────────────────────────────
+function renderFruits() {
+  const fruits = loadFruits();
+  const grid = document.getElementById("fruits-grid");
+  grid.innerHTML = fruits.map(f => `
+    <div class="fruit-tile">
+      ${f.tag ? `<div class="tag${f.tag==='Offer'?' offer':''}">${f.tag}</div>` : ''}
+      <div class="emoji">${f.emoji}</div>
+      <div class="fname">${f.name}</div>
+      <div class="funit">${f.unit}</div>
+      <div class="fprice">₹${f.price}</div>
+    </div>`).join('');
+
+  // Hero tiles (first 4)
+  const heroTiles = document.getElementById("hero-tiles");
+  if (heroTiles) {
+    heroTiles.innerHTML = fruits.slice(0,4).map(f => `
+      <div class="fruit-card-hero">
+        <div class="emoji">${f.emoji}</div>
+        <div class="name">${f.name}</div>
+        <div class="price">₹${f.price}</div>
+      </div>`).join('');
+  }
+}
+
+// ─── ADMIN ───────────────────────────────────────────────────────────────────
+function unlockAdmin() {
+  const pass = document.getElementById("admin-pass").value;
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById("admin-panel").style.display = "block";
+    renderEditRows();
+    document.getElementById("admin-pass").style.borderColor = "var(--leaf)";
+  } else {
+    document.getElementById("admin-pass").style.borderColor = "var(--red)";
+    document.getElementById("admin-pass").placeholder = "Wrong password!";
+  }
+}
+
+function renderEditRows() {
+  const fruits = loadFruits();
+  document.getElementById("edit-rows").innerHTML = fruits.map((f, i) => `
+    <div class="fruit-edit-row" id="row-${i}">
+      <div>
+        <label>Emoji & Name</label>
+        <input value="${f.emoji} ${f.name}" id="fn-${i}" placeholder="🍎 Apple"/>
+      </div>
+      <div>
+        <label>Price (₹)</label>
+        <input type="number" value="${f.price}" id="fp-${i}" min="1"/>
+      </div>
+      <div>
+        <label>Unit</label>
+        <input value="${f.unit}" id="fu-${i}" placeholder="per kg"/>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button class="btn-del" onclick="deleteRow(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteRow(i) {
+  const fruits = loadFruits();
+  fruits.splice(i, 1);
+  saveFruitsData(fruits);
+  renderEditRows();
+  renderFruits();
+}
+
+function addFruitRow() {
+  const fruits = loadFruits();
+  fruits.push({ emoji:"🍑", name:"New Fruit", price:50, unit:"per kg", tag:"Fresh" });
+  saveFruitsData(fruits);
+  renderEditRows();
+  renderFruits();
+}
+
+function saveFruits() {
+  const fruits = loadFruits();
+  const newFruits = fruits.map((f, i) => {
+    const raw = (document.getElementById(`fn-${i}`)?.value || "").trim();
+    const parts = raw.split(" ");
+    const emoji = parts[0] || f.emoji;
+    const name = parts.slice(1).join(" ") || f.name;
+    const price = parseInt(document.getElementById(`fp-${i}`)?.value) || f.price;
+    const unit = (document.getElementById(`fu-${i}`)?.value || f.unit).trim();
+    return { emoji, name, price, unit, tag: f.tag };
+  });
+  saveFruitsData(newFruits);
+  renderFruits();
+  const msg = document.getElementById("save-msg");
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 3000);
+}
+
+// ─── REVIEWS ─────────────────────────────────────────────────────────────────
+const defaultReviews = [
+  { name:"Priya S.", stars:5, text:"Always fresh fruits! The mangoes are absolutely divine. Delivery was quick too." },
+  { name:"Ramesh K.", stars:5, text:"Best fruit shop in the area. Prices are fair and quality is excellent. Highly recommend!" },
+  { name:"Meena T.", stars:4, text:"Good variety and fresh stock every day. Love shopping here for my family." },
+];
+
+function loadReviews() {
+  try {
+    const s = localStorage.getItem("anbu_reviews");
+    return s ? JSON.parse(s) : defaultReviews;
+  } catch(e) { return defaultReviews; }
+}
+
+function renderReviews() {
+  const reviews = loadReviews();
+  document.getElementById("reviews-grid").innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      <div class="text">${r.text}</div>
+      <div class="author">— ${r.name}</div>
+    </div>`).join('');
+}
+
+// Star selector
+let selectedStars = 5;
+document.getElementById("star-select").addEventListener("click", e => {
+  if (e.target.dataset.v) {
+    selectedStars = parseInt(e.target.dataset.v);
+    document.querySelectorAll("#star-select span").forEach((s,i) => {
+      s.classList.toggle("active", i < selectedStars);
+    });
+  }
+});
+// init stars active
+document.querySelectorAll("#star-select span").forEach(s => s.classList.add("active"));
+
+function submitReview() {
+  const name = document.getElementById("rv-name").value.trim();
+  const text = document.getElementById("rv-text").value.trim();
+  if (!name || !text) { alert("Please fill in your name and review."); return; }
+  const reviews = loadReviews();
+  reviews.unshift({ name, stars: selectedStars, text });
+  localStorage.setItem("anbu_reviews", JSON.stringify(reviews));
+  renderReviews();
+  document.getElementById("rv-name").value = "";
+  document.getElementById("rv-text").value = "";
+  const msg = document.getElementById("rv-msg");
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 3000);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderFruits();
+renderReviews();
+</script>
+</body>
+</html>
